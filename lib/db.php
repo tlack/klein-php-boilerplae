@@ -1,15 +1,27 @@
 <?
 	// database stuff
 
+	function xmaybe_connect() {
+		global $CONFIG;
+		static $conn = false;
+
+		if ($conn) return $conn;
+
+		$db = $CONFIG['db'];
+		$conn = mysql_pconnect($db['host'], $db['user'], $db['pass']);
+		if (!$conn) trigger_error('MySQL error: ' . mysql_error(), E_USER_ERROR);
+		mysql_select_db($db['db']);
+	}
+
 	function x1($qs) {
-		// xone_row()
+		xmaybe_connect();
 		$res = mysql_query($qs);
 		if (!$res) die(mysql_error());
 		return mysql_fetch_assoc($res);
 	}
 
 	function xa($qs, $key_col = false) {
-		// xall_rows()
+		xmaybe_connect();
 		$res = mysql_query($qs);
 		if (!$res) die(mysql_error());
 		$rows = array();
@@ -23,6 +35,7 @@
 	}
 
 	function xinsert($table, $vals, $call_mes = false) {
+		xmaybe_connect();
 		$qs = "
 			insert into $table
 			(
@@ -52,6 +65,7 @@
 	}
 
 	function xupdate($qs) {
+		xmaybe_connect();
 		$res = mysql_query($qs);
 		if (!$res) die('xupdate(): '. mysql_error());
 		return mysql_affected_rows();
