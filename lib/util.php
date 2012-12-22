@@ -21,4 +21,15 @@
 		exit;
 	}
 
+	function xsetcookie($name, $value) {
+		global $CONFIG;
+
+		if (empty($CONFIG['cookie_domain']))
+			x500('cookie_domain not set in config');
+
+		$_COOKIE[$name] = $value;
+		$domain = $CONFIG['cookie_domain'];
+		$t = time() + (60 * 60 * 24 * 365 * 2);
+		setcookie($name, $value, $t, '/', $domain, 0);
+	}
 
