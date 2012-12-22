@@ -5,7 +5,13 @@
 	$CONFIG = array();
 
 	// default config options
+	// set to an admin password for /admin/ stuff
+	$CONFIG['admin_pass'] = '';
+	$CONFIG['admin_url'] = '/admin/'; // format /whatever/ must end in /
+	$CONFIG['cookie_domain'] = $_SERVER['HTTP_HOST'];
 	$CONFIG['templates'] = dirname(__FILE__).'/../templates/';
+
+	// override this in the environment-specific config
 	$CONFIG['db'] = array(
 		'user' => '',
 		'pass' => '',
